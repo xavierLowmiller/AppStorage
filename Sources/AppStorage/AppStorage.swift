@@ -2,7 +2,7 @@ import SwiftUI
 
 /// A property wrapper type that reflects a value from `UserDefaults` and
 /// invalidates a view on a change in value in that user default.
-@frozen @propertyWrapper public struct MyAppStorage<Value> : DynamicProperty {
+@frozen @propertyWrapper public struct Persistence<Value> : DynamicProperty {
 
     @ObservedObject private var _value: Storage<Value>
     private let saveValue: (Value) -> Void
@@ -57,7 +57,7 @@ private final class Storage<Value>: NSObject, ObservableObject {
     }
 }
 
-extension MyAppStorage {
+extension Persistence {
 
     /// Creates a property that can read and write to a boolean user default.
     ///
