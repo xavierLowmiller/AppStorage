@@ -148,9 +148,9 @@ extension Persistence {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
         self.init(value: initialValue, store: store, key: key) { any in
-            any as? Value
+            (any as? String).flatMap(URL.init)
         } saveValue: { newValue in
-            store.setValue(newValue, forKey: key)
+            store.setValue(newValue.absoluteString, forKey: key)
         }
     }
 
