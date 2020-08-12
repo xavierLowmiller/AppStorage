@@ -4,16 +4,21 @@ import SwiftUI
 /// invalidates a view on a change in value in that user default.
 @frozen @propertyWrapper public struct MyAppStorage<Value> : DynamicProperty {
 
-    @State private var _value: Value
+    @ObservedObject private var _value: Storage<Value>
     private let saveValue: (Value) -> Void
+
+    private init(value: Value, store: UserDefaults, key: String, transform: @escaping (Any?) -> Value?, saveValue: @escaping (Value) -> Void) {
+        _value = Storage(value: value, store: store, key: key, transform: transform)
+        self.saveValue = saveValue
+    }
 
     public var wrappedValue: Value {
         get {
-            _value
+            _value.value
         }
         nonmutating set {
             saveValue(newValue)
-            _value = newValue
+            _value.value = newValue
         }
     }
 
@@ -22,6 +27,33 @@ import SwiftUI
             get: { wrappedValue },
             set: { wrappedValue = $0 }
         )
+    }
+}
+
+private final class Storage<Value>: NSObject, ObservableObject {
+    @Published var value: Value
+    private let defaultValue: Value
+    private let store: UserDefaults
+    private let keyPath: String
+    private let transform: (Any?) -> Value?
+
+    init(value: Value, store: UserDefaults, key: String, transform: @escaping (Any?) -> Value?) {
+        self.value = value
+        self.defaultValue = value
+        self.store = store
+        self.keyPath = key
+        self.transform = transform
+        super.init()
+
+        store.addObserver(self, forKeyPath: key, options: [.new], context: nil)
+    }
+
+    deinit {
+        store.removeObserver(self, forKeyPath: keyPath)
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        value = change?[.newKey].flatMap(transform) ?? defaultValue
     }
 }
 
@@ -39,7 +71,9 @@ extension MyAppStorage {
     public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == Bool {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(_value: initialValue) { newValue in
+        self.init(value: initialValue, store: store, key: key) { any in
+            any as? Value
+        } saveValue: { newValue in
             store.setValue(newValue, forKey: key)
         }
     }
@@ -56,7 +90,9 @@ extension MyAppStorage {
     public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == Int {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(_value: initialValue) { newValue in
+        self.init(value: initialValue, store: store, key: key) { any in
+            any as? Value
+        } saveValue: { newValue in
             store.setValue(newValue, forKey: key)
         }
     }
@@ -73,7 +109,9 @@ extension MyAppStorage {
     public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == Double {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(_value: initialValue) { newValue in
+        self.init(value: initialValue, store: store, key: key) { any in
+            any as? Value
+        } saveValue: { newValue in
             store.setValue(newValue, forKey: key)
         }
     }
@@ -90,7 +128,9 @@ extension MyAppStorage {
     public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == String {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(_value: initialValue) { newValue in
+        self.init(value: initialValue, store: store, key: key) { any in
+            any as? Value
+        } saveValue: { newValue in
             store.setValue(newValue, forKey: key)
         }
     }
@@ -107,7 +147,9 @@ extension MyAppStorage {
     public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == URL {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(_value: initialValue) { newValue in
+        self.init(value: initialValue, store: store, key: key) { any in
+            any as? Value
+        } saveValue: { newValue in
             store.setValue(newValue, forKey: key)
         }
     }
@@ -129,7 +171,9 @@ extension MyAppStorage {
     public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == Data {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(_value: initialValue) { newValue in
+        self.init(value: initialValue, store: store, key: key) { any in
+            any as? Value
+        } saveValue: { newValue in
             store.setValue(newValue, forKey: key)
         }
     }
@@ -160,7 +204,9 @@ extension MyAppStorage {
         let store = (store ?? .standard)
         let rawValue = store.value(forKey: key) as? Int
         let initialValue = rawValue.flatMap(Value.init) ?? wrappedValue
-        self.init(_value: initialValue) { newValue in
+        self.init(value: initialValue, store: store, key: key) { any in
+            (any as? Int).flatMap(Value.init)
+        } saveValue: { newValue in
             store.setValue(newValue.rawValue, forKey: key)
         }
     }
@@ -191,7 +237,9 @@ extension MyAppStorage {
         let store = (store ?? .standard)
         let rawValue = store.value(forKey: key) as? String
         let initialValue = rawValue.flatMap(Value.init) ?? wrappedValue
-        self.init(_value: initialValue) { newValue in
+        self.init(value: initialValue, store: store, key: key) { any in
+            (any as? String).flatMap(Value.init)
+        } saveValue: { newValue in
             store.setValue(newValue.rawValue, forKey: key)
         }
     }
