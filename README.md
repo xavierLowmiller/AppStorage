@@ -85,8 +85,14 @@ struct ContentView: View {
 
 ### Swift Package Manager
 
+Add the package to your Package.swift file:
+
 ```swift
 dependencies: [
     .package(url: "https://github.com/xavierLowmiller/AppStorage.git", .upToNextMajor(from: "1.0.0"))
 ]
 ```
+
+### Manual
+
+Since it's just a single file, you can just download and drag it to your project.
