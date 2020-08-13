@@ -1,156 +1,87 @@
 import XCTest
-import SwiftUI
 @testable import AppStorage
 
-#if swift(>=5.3)
-@available(macOS 11, iOS 14, tvOS 14, watchOS 7, *)
 final class AppStorageTests: XCTestCase {
 
     func testStoringBooleansShouldBeEquivalentToAppStorage() {
-        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
-        let storePackage = UserDefaults(suiteName: #function + "Package")!
+        let store = UserDefaults(suiteName: #function)!
 
-        // SwiftUI
-        let swiftUI = AppStorage(wrappedValue: true, "boolean", store: storeSwiftUI)
-        swiftUI.wrappedValue = false
+        let persistence = Persistence(wrappedValue: true, "boolean", store: store)
+        persistence.wrappedValue = false
 
-        // AppStorage Package
-        let package = Persistence(wrappedValue: true, "boolean", store: storePackage)
-        package.wrappedValue = false
-
-        XCTAssertEqual(storePackage.bool(forKey: "boolean"), false)
-        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
-                       storePackage.dictionaryRepresentation() as NSDictionary)
+        XCTAssertEqual(store.bool(forKey: "boolean"), false)
     }
 
     func testStoringIntegersShouldBeEquivalentToAppStorage() {
-        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
-        let storePackage = UserDefaults(suiteName: #function + "Package")!
+        let store = UserDefaults(suiteName: #function)!
 
-        // SwiftUI
-        let swiftUI = AppStorage(wrappedValue: 42, "magic number", store: storeSwiftUI)
-        swiftUI.wrappedValue = 43
+        let persistence = Persistence(wrappedValue: 42, "magic number", store: store)
+        persistence.wrappedValue = 43
 
-        // AppStorage Package
-        let package = Persistence(wrappedValue: 42, "magic number", store: storePackage)
-        package.wrappedValue = 43
-
-        XCTAssertEqual(storePackage.integer(forKey: "magic number"), 43)
-        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
-                       storePackage.dictionaryRepresentation() as NSDictionary)
+        XCTAssertEqual(store.integer(forKey: "magic number"), 43)
     }
 
     func testStoringDoublesShouldBeEquivalentToAppStorage() {
-        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
-        let storePackage = UserDefaults(suiteName: #function + "Package")!
+        let store = UserDefaults(suiteName: #function)!
 
-        // SwiftUI
-        let swiftUI = AppStorage(wrappedValue: 42.0, "magic number", store: storeSwiftUI)
-        swiftUI.wrappedValue = 42.1
+        let persistence = Persistence(wrappedValue: 42.0, "magic number", store: store)
+        persistence.wrappedValue = 42.1
 
-        // AppStorage Package
-        let package = Persistence(wrappedValue: 42.0, "magic number", store: storePackage)
-        package.wrappedValue = 42.1
-
-        XCTAssertEqual(storePackage.double(forKey: "magic number"), 42.1)
-        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
-                       storePackage.dictionaryRepresentation() as NSDictionary)
+        XCTAssertEqual(store.double(forKey: "magic number"), 42.1)
     }
 
     func testStoringStringsShouldBeEquivalentToAppStorage() {
-        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
-        let storePackage = UserDefaults(suiteName: #function + "Package")!
+        let store = UserDefaults(suiteName: #function)!
 
-        // SwiftUI
-        let swiftUI = AppStorage(wrappedValue: "surfin' bird", "the word", store: storeSwiftUI)
-        swiftUI.wrappedValue = "bird"
+        let persistence = Persistence(wrappedValue: "surfin' bird", "the word", store: store)
+        persistence.wrappedValue = "bird"
 
-        // AppStorage Package
-        let package = Persistence(wrappedValue: "surfin' bird", "the word", store: storePackage)
-        package.wrappedValue = "bird"
-
-        XCTAssertEqual(storePackage.string(forKey: "the word"), "bird")
-        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
-                       storePackage.dictionaryRepresentation() as NSDictionary)
+        XCTAssertEqual(store.string(forKey: "the word"), "bird")
     }
 
     func testStoringURLsShouldBeEquivalentToAppStorage() {
-//        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
-        let storePackage = UserDefaults(suiteName: #function + "Package")!
+        let store = UserDefaults(suiteName: #function)!
 
         let url1 = URL(string: "https://example.com")!
         let url2 = URL(string: "https://example.org")!
 
-        // SwiftUI
-        // SwiftUI Crashes here (at least in iOS 14 beta 4)
-//        let swiftUI = AppStorage(wrappedValue: url1, "url", store: storeSwiftUI)
-//        swiftUI.wrappedValue = url2
+        let persistence = Persistence(wrappedValue: url1, "url", store: store)
+        persistence.wrappedValue = url2
 
-        // AppStorage Package
-        let package = Persistence(wrappedValue: url1, "url", store: storePackage)
-        package.wrappedValue = url2
-
-        XCTAssertEqual(storePackage.string(forKey: "url"), url2.absoluteString)
-//        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
-//                       storePackage.dictionaryRepresentation() as NSDictionary)
+        XCTAssertEqual(store.string(forKey: "url"), url2.absoluteString)
     }
 
     func testStoringDataShouldBeEquivalentToAppStorage() {
-        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
-        let storePackage = UserDefaults(suiteName: #function + "Package")!
+        let store = UserDefaults(suiteName: #function)!
 
         let data1 = "0101".data(using: .utf8)!
         let data2 = "1010".data(using: .utf8)!
 
-        // SwiftUI
-        let swiftUI = AppStorage(wrappedValue: data1, "raw data", store: storeSwiftUI)
-        swiftUI.wrappedValue = data2
+        let persistence = Persistence(wrappedValue: data1, "raw data", store: store)
+        persistence.wrappedValue = data2
 
-        // AppStorage Package
-        let package = Persistence(wrappedValue: data1, "raw data", store: storePackage)
-        package.wrappedValue = data2
-
-        XCTAssertEqual(storePackage.data(forKey: "raw data"), data2)
-        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
-                       storePackage.dictionaryRepresentation() as NSDictionary)
+        XCTAssertEqual(store.data(forKey: "raw data"), data2)
     }
 
     func testStoringStringEnumsShouldBeEquivalentToAppStorage() {
-        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
-        let storePackage = UserDefaults(suiteName: #function + "Package")!
+        let store = UserDefaults(suiteName: #function)!
 
         enum StringEnum: String { case a, b }
 
-        // SwiftUI
-        let swiftUI = AppStorage(wrappedValue: StringEnum.a, "string enum", store: storeSwiftUI)
-        swiftUI.wrappedValue = .b
+        let persistence = Persistence(wrappedValue: StringEnum.a, "string enum", store: store)
+        persistence.wrappedValue = .b
 
-        // AppStorage Package
-        let package = Persistence(wrappedValue: StringEnum.a, "string enum", store: storePackage)
-        package.wrappedValue = .b
-
-        XCTAssertEqual(storePackage.string(forKey: "string enum"), "b")
-        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
-                       storePackage.dictionaryRepresentation() as NSDictionary)
+        XCTAssertEqual(store.string(forKey: "string enum"), "b")
     }
 
     func testStoringIntegerEnumsShouldBeEquivalentToAppStorage() {
-        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
-        let storePackage = UserDefaults(suiteName: #function + "Package")!
+        let store = UserDefaults(suiteName: #function)!
 
         enum IntEnum: Int { case a, b }
 
-        // SwiftUI
-        let swiftUI = AppStorage(wrappedValue: IntEnum.a, "int enum", store: storeSwiftUI)
-        swiftUI.wrappedValue = .b
+        let persistence = Persistence(wrappedValue: IntEnum.a, "int enum", store: store)
+        persistence.wrappedValue = .b
 
-        // AppStorage Package
-        let package = Persistence(wrappedValue: IntEnum.a, "int enum", store: storePackage)
-        package.wrappedValue = .b
-
-        XCTAssertEqual(storePackage.integer(forKey: "int enum"), 1)
-        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
-                       storePackage.dictionaryRepresentation() as NSDictionary)
+        XCTAssertEqual(store.integer(forKey: "int enum"), 1)
     }
 }
-#endif

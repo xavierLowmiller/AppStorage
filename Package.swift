@@ -18,5 +18,8 @@ let package = Package(
         .testTarget(
             name: "AppStorageTests",
             dependencies: ["AppStorage"]),
+        .testTarget(
+            name: "AppStorageCompatibilityTests",
+            dependencies: ["AppStorage"]),
     ]
 )
