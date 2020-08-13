@@ -95,6 +95,26 @@ final class AppStorageTests: XCTestCase {
 //                       storePackage.dictionaryRepresentation() as NSDictionary)
     }
 
+    func testStoringDataShouldBeEquivalentToAppStorage() {
+        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
+        let storePackage = UserDefaults(suiteName: #function + "Package")!
+
+        let data1 = "0101".data(using: .utf8)!
+        let data2 = "1010".data(using: .utf8)!
+
+        // SwiftUI
+        let swiftUI = AppStorage(wrappedValue: data1, "raw data", store: storeSwiftUI)
+        swiftUI.wrappedValue = data2
+
+        // AppStorage Package
+        let package = Persistence(wrappedValue: data1, "raw data", store: storePackage)
+        package.wrappedValue = data2
+
+        XCTAssertEqual(storePackage.data(forKey: "raw data"), data2)
+        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
+                       storePackage.dictionaryRepresentation() as NSDictionary)
+    }
+
     func testStoringStringEnumsShouldBeEquivalentToAppStorage() {
         let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
         let storePackage = UserDefaults(suiteName: #function + "Package")!
