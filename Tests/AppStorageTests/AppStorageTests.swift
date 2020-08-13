@@ -2,6 +2,7 @@ import XCTest
 import SwiftUI
 @testable import AppStorage
 
+#if swift(>=5.3)
 @available(macOS 11, iOS 14, tvOS 14, watchOS 7, *)
 final class AppStorageTests: XCTestCase {
 
@@ -132,3 +133,4 @@ final class AppStorageTests: XCTestCase {
                        storePackage.dictionaryRepresentation() as NSDictionary)
     }
 }
+#endif

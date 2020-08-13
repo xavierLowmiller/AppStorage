@@ -24,8 +24,8 @@ import SwiftUI
 
     public var projectedValue: Binding<Value> {
         Binding(
-            get: { wrappedValue },
-            set: { wrappedValue = $0 }
+            get: { self.wrappedValue },
+            set: { self.wrappedValue = $0 }
         )
     }
 }
@@ -57,7 +57,7 @@ private final class Storage<Value>: NSObject, ObservableObject {
     }
 }
 
-extension Persistence {
+extension Persistence where Value == Bool {
 
     /// Creates a property that can read and write to a boolean user default.
     ///
@@ -68,16 +68,18 @@ extension Persistence {
     ///     store.
     ///   - store: The user defaults store to read and write to. A value
     ///     of `nil` will use the user default store from the environment.
-    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == Bool {
+    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(value: initialValue, store: store, key: key) { any in
-            any as? Value
-        } saveValue: { newValue in
+        self.init(value: initialValue, store: store, key: key, transform: {
+            $0 as? Value
+        }, saveValue: { newValue in
             store.setValue(newValue, forKey: key)
-        }
+        })
     }
+}
 
+extension Persistence where Value == Int {
     /// Creates a property that can read and write to an integer user default.
     ///
     /// - Parameters:
@@ -87,15 +89,18 @@ extension Persistence {
     ///     store.
     ///   - store: The user defaults store to read and write to. A value
     ///     of `nil` will use the user default store from the environment.
-    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == Int {
+    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(value: initialValue, store: store, key: key) { any in
-            any as? Value
-        } saveValue: { newValue in
+        self.init(value: initialValue, store: store, key: key, transform: {
+            $0 as? Value
+        }, saveValue: { newValue in
             store.setValue(newValue, forKey: key)
-        }
+        })
     }
+}
+
+extension Persistence where Value == Double {
 
     /// Creates a property that can read and write to a double user default.
     ///
@@ -106,15 +111,18 @@ extension Persistence {
     ///     store.
     ///   - store: The user defaults store to read and write to. A value
     ///     of `nil` will use the user default store from the environment.
-    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == Double {
+    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(value: initialValue, store: store, key: key) { any in
-            any as? Value
-        } saveValue: { newValue in
+        self.init(value: initialValue, store: store, key: key, transform: {
+            $0 as? Value
+        }, saveValue: { newValue in
             store.setValue(newValue, forKey: key)
-        }
+        })
     }
+}
+
+extension Persistence where Value == String {
 
     /// Creates a property that can read and write to a string user default.
     ///
@@ -125,15 +133,18 @@ extension Persistence {
     ///     store.
     ///   - store: The user defaults store to read and write to. A value
     ///     of `nil` will use the user default store from the environment.
-    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == String {
+    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(value: initialValue, store: store, key: key) { any in
-            any as? Value
-        } saveValue: { newValue in
+        self.init(value: initialValue, store: store, key: key, transform: {
+            $0 as? Value
+        }, saveValue: { newValue in
             store.setValue(newValue, forKey: key)
-        }
+        })
     }
+}
+
+extension Persistence where Value == URL {
 
     /// Creates a property that can read and write to a url user default.
     ///
@@ -144,15 +155,18 @@ extension Persistence {
     ///     store.
     ///   - store: The user defaults store to read and write to. A value
     ///     of `nil` will use the user default store from the environment.
-    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == URL {
+    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(value: initialValue, store: store, key: key) { any in
-            (any as? String).flatMap(URL.init)
-        } saveValue: { newValue in
+        self.init(value: initialValue, store: store, key: key, transform: {
+            ($0 as? String).flatMap(URL.init)
+        }, saveValue: { newValue in
             store.setValue(newValue.absoluteString, forKey: key)
-        }
+        })
     }
+}
+
+extension Persistence where Value == Data {
 
     /// Creates a property that can read and write to a user default as data.
     ///
@@ -168,15 +182,18 @@ extension Persistence {
     ///     store.
     ///   - store: The user defaults store to read and write to. A value
     ///     of `nil` will use the user default store from the environment.
-    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value == Data {
+    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) {
         let store = (store ?? .standard)
         let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
-        self.init(value: initialValue, store: store, key: key) { any in
-            any as? Value
-        } saveValue: { newValue in
+        self.init(value: initialValue, store: store, key: key, transform: {
+            $0 as? Value
+        }, saveValue: { newValue in
             store.setValue(newValue, forKey: key)
-        }
+        })
     }
+}
+
+extension Persistence where Value : RawRepresentable, Value.RawValue == Int {
 
     /// Creates a property that can read and write to an integer user default,
     /// transforming that to `RawRepresentable` data type.
@@ -200,16 +217,19 @@ extension Persistence {
     ///     store.
     ///   - store: The user defaults store to read and write to. A value
     ///     of `nil` will use the user default store from the environment.
-    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value : RawRepresentable, Value.RawValue == Int {
+    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) {
         let store = (store ?? .standard)
         let rawValue = store.value(forKey: key) as? Int
         let initialValue = rawValue.flatMap(Value.init) ?? wrappedValue
-        self.init(value: initialValue, store: store, key: key) { any in
-            (any as? Int).flatMap(Value.init)
-        } saveValue: { newValue in
+        self.init(value: initialValue, store: store, key: key, transform: {
+            ($0 as? Int).flatMap(Value.init)
+        }, saveValue: { newValue in
             store.setValue(newValue.rawValue, forKey: key)
-        }
+        })
     }
+}
+
+extension Persistence where Value : RawRepresentable, Value.RawValue == String {
 
     /// Creates a property that can read and write to a string user default,
     /// transforming that to `RawRepresentable` data type.
@@ -233,14 +253,14 @@ extension Persistence {
     ///     store.
     ///   - store: The user defaults store to read and write to. A value
     ///     of `nil` will use the user default store from the environment.
-    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) where Value : RawRepresentable, Value.RawValue == String {
+    public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) {
         let store = (store ?? .standard)
         let rawValue = store.value(forKey: key) as? String
         let initialValue = rawValue.flatMap(Value.init) ?? wrappedValue
-        self.init(value: initialValue, store: store, key: key) { any in
-            (any as? String).flatMap(Value.init)
-        } saveValue: { newValue in
+        self.init(value: initialValue, store: store, key: key, transform: {
+            ($0 as? String).flatMap(Value.init)
+        }, saveValue: { newValue in
             store.setValue(newValue.rawValue, forKey: key)
-        }
+        })
     }
 }
