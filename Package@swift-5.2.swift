@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.2
 
 import PackageDescription
 
@@ -15,8 +15,5 @@ let package = Package(
         .target(
             name: "AppStorage",
             dependencies: []),
-        .testTarget(
-            name: "AppStorageTests",
-            dependencies: ["AppStorage"]),
     ]
 )
