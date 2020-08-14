@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Generate Xcode Project
+      run: swift package generate-xcodeproj
     - name: Run Xcode 12 tests
       run: xcodebuild test \
         -scheme AppStorage-Package \
