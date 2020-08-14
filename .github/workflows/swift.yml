@@ -17,7 +17,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run Xcode 12 tests
-      run: swift test
+      run: xcodebuild test \
+        -scheme AppStorage-Package \
+        -destination 'platform=iOS Simulator,name=iPhone 11,OS=14.0'
 
   test-xcode-11:
     env:
