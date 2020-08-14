@@ -1,0 +1,32 @@
+name: Swift
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-xcode-12:
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_12_beta.app/Contents/Developer
+
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Xcode 12 tests
+      run: swift test
+
+  test-xcode-11:
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_11.6.app/Contents/Developer
+
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Xcode 11 tests
+      run: swift test
