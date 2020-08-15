@@ -78,6 +78,8 @@ struct ContentView: View {
 }
 ```
 
+<img src="https://github.com/xavierLowmiller/AppStorage/raw/main/Images/Example.gif" width="375">
+
 </p>
 </details>
 
