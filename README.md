@@ -95,6 +95,19 @@ dependencies: [
 ]
 ```
 
+### CocoaPods
+
+Add the pod to your Podfile:
+
+```ruby
+platform :ios, '13.0'
+use_frameworks!
+
+target 'MyApp' do
+  pod 'AppStorage', '~> 1.0'
+end
+```
+
 ### Manual
 
 Since it's just a single file, you can just download and drag it to your project.
