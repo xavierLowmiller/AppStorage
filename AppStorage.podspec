@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
 
   spec.license      = {
     :type => "MIT",
-    :file => "LICENSE.md"
+    :file => "LICENSE"
   }
 
   spec.author             = { "Xavier Lowmiller" => "xaver.lohmueller@me.com" }
