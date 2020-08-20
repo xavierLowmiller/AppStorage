@@ -108,6 +108,14 @@ target 'MyApp' do
 end
 ```
 
+### Carthage
+
+Add this line to your Cartfile:
+
+```ruby
+github "xavierLowmiller/AppStorage" ~> 1.0.1
+```
+
 ### Manual
 
 Since it's just a single file, you can just download and drag it to your project.
