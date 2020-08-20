@@ -1,0 +1,22 @@
+name: Release
+
+on:
+  push:
+    tags: "*.*.*"
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build Carthage Archive
+      run: carthage build --archive
+
+    - name: Release
+      uses: meeDamian/github-release@2.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: AppStorage.framework.zip
