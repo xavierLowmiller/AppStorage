@@ -157,11 +157,11 @@ extension Persistence where Value == URL {
     ///     of `nil` will use the user default store from the environment.
     public init(wrappedValue: Value, _ key: String, store: UserDefaults? = nil) {
         let store = (store ?? .standard)
-        let initialValue = store.value(forKey: key) as? Value ?? wrappedValue
+        let initialValue = store.url(forKey: key) ?? wrappedValue
         self.init(value: initialValue, store: store, key: key, transform: {
             ($0 as? String).flatMap(URL.init)
         }, saveValue: { newValue in
-            store.setValue(newValue.absoluteString, forKey: key)
+            store.set(newValue, forKey: key)
         })
     }
 }

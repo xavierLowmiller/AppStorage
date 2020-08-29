@@ -48,7 +48,7 @@ final class AppStorageTests: XCTestCase {
         let persistence = Persistence(wrappedValue: url1, "url", store: store)
         persistence.wrappedValue = url2
 
-        XCTAssertEqual(store.string(forKey: "url"), url2.absoluteString)
+        XCTAssertEqual(store.url(forKey: "url"), url2)
     }
 
     func testStoringDataShouldBeEquivalentToAppStorage() {

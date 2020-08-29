@@ -74,24 +74,23 @@ final class AppStorageCompatibilityTests: XCTestCase {
     }
 
     func testStoringURLsShouldBeEquivalentToAppStorage() {
-//        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
+        let storeSwiftUI = UserDefaults(suiteName: #function + "SwiftUI")!
         let storePackage = UserDefaults(suiteName: #function + "Package")!
 
         let url1 = URL(string: "https://example.com")!
         let url2 = URL(string: "https://example.org")!
 
         // SwiftUI
-        // SwiftUI Crashes here (at least in iOS 14 beta 4)
-//        let swiftUI = AppStorage(wrappedValue: url1, "url", store: storeSwiftUI)
-//        swiftUI.wrappedValue = url2
+        let swiftUI = AppStorage(wrappedValue: url1, "url", store: storeSwiftUI)
+        swiftUI.wrappedValue = url2
 
         // AppStorage Package
         let package = Persistence(wrappedValue: url1, "url", store: storePackage)
         package.wrappedValue = url2
 
-        XCTAssertEqual(storePackage.string(forKey: "url"), url2.absoluteString)
-//        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
-//                       storePackage.dictionaryRepresentation() as NSDictionary)
+        XCTAssertEqual(storePackage.url(forKey: "url"), url2)
+        XCTAssertEqual(storeSwiftUI.dictionaryRepresentation() as NSDictionary,
+                       storePackage.dictionaryRepresentation() as NSDictionary)
     }
 
     func testStoringDataShouldBeEquivalentToAppStorage() {
