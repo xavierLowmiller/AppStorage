@@ -24,13 +24,13 @@ import SwiftUI
 
     public var projectedValue: Binding<Value> {
         Binding(
-            get: { self.wrappedValue },
-            set: { self.wrappedValue = $0 }
+            get: { wrappedValue },
+            set: { wrappedValue = $0 }
         )
     }
 }
 
-private final class Storage<Value>: NSObject, ObservableObject {
+private class Storage<Value>: NSObject, ObservableObject {
     @Published var value: Value
     private let defaultValue: Value
     private let store: UserDefaults
@@ -52,7 +52,11 @@ private final class Storage<Value>: NSObject, ObservableObject {
         store.removeObserver(self, forKeyPath: keyPath)
     }
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?,
+                               change: [NSKeyValueChangeKey : Any]?,
+                               context: UnsafeMutableRawPointer?) {
+
         value = change?[.newKey].flatMap(transform) ?? defaultValue
     }
 }
