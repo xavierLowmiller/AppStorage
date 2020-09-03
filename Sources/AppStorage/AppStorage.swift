@@ -24,8 +24,8 @@ import SwiftUI
 
     public var projectedValue: Binding<Value> {
         Binding(
-            get: { wrappedValue },
-            set: { wrappedValue = $0 }
+            get: { self.wrappedValue },
+            set: { self.wrappedValue = $0 }
         )
     }
 }
