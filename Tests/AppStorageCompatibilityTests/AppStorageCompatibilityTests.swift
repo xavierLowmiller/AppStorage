@@ -14,7 +14,7 @@ final class AppStorageCompatibilityTests: XCTestCase {
         swiftUI.wrappedValue = false
 
         // AppStorage Package
-        let package = Persistence(wrappedValue: true, "boolean", store: storePackage)
+        let package = AppStorageCompat(wrappedValue: true, "boolean", store: storePackage)
         package.wrappedValue = false
 
         XCTAssertEqual(storePackage.bool(forKey: "boolean"), false)
@@ -31,7 +31,7 @@ final class AppStorageCompatibilityTests: XCTestCase {
         swiftUI.wrappedValue = 43
 
         // AppStorage Package
-        let package = Persistence(wrappedValue: 42, "magic number", store: storePackage)
+        let package = AppStorageCompat(wrappedValue: 42, "magic number", store: storePackage)
         package.wrappedValue = 43
 
         XCTAssertEqual(storePackage.integer(forKey: "magic number"), 43)
@@ -48,7 +48,7 @@ final class AppStorageCompatibilityTests: XCTestCase {
         swiftUI.wrappedValue = 42.1
 
         // AppStorage Package
-        let package = Persistence(wrappedValue: 42.0, "magic number", store: storePackage)
+        let package = AppStorageCompat(wrappedValue: 42.0, "magic number", store: storePackage)
         package.wrappedValue = 42.1
 
         XCTAssertEqual(storePackage.double(forKey: "magic number"), 42.1)
@@ -65,7 +65,7 @@ final class AppStorageCompatibilityTests: XCTestCase {
         swiftUI.wrappedValue = "bird"
 
         // AppStorage Package
-        let package = Persistence(wrappedValue: "surfin' bird", "the word", store: storePackage)
+        let package = AppStorageCompat(wrappedValue: "surfin' bird", "the word", store: storePackage)
         package.wrappedValue = "bird"
 
         XCTAssertEqual(storePackage.string(forKey: "the word"), "bird")
@@ -85,7 +85,7 @@ final class AppStorageCompatibilityTests: XCTestCase {
         swiftUI.wrappedValue = url2
 
         // AppStorage Package
-        let package = Persistence(wrappedValue: url1, "url", store: storePackage)
+        let package = AppStorageCompat(wrappedValue: url1, "url", store: storePackage)
         package.wrappedValue = url2
 
         XCTAssertEqual(storePackage.url(forKey: "url"), url2)
@@ -105,7 +105,7 @@ final class AppStorageCompatibilityTests: XCTestCase {
         swiftUI.wrappedValue = data2
 
         // AppStorage Package
-        let package = Persistence(wrappedValue: data1, "raw data", store: storePackage)
+        let package = AppStorageCompat(wrappedValue: data1, "raw data", store: storePackage)
         package.wrappedValue = data2
 
         XCTAssertEqual(storePackage.data(forKey: "raw data"), data2)
@@ -124,7 +124,7 @@ final class AppStorageCompatibilityTests: XCTestCase {
         swiftUI.wrappedValue = .b
 
         // AppStorage Package
-        let package = Persistence(wrappedValue: StringEnum.a, "string enum", store: storePackage)
+        let package = AppStorageCompat(wrappedValue: StringEnum.a, "string enum", store: storePackage)
         package.wrappedValue = .b
 
         XCTAssertEqual(storePackage.string(forKey: "string enum"), "b")
@@ -143,7 +143,7 @@ final class AppStorageCompatibilityTests: XCTestCase {
         swiftUI.wrappedValue = .b
 
         // AppStorage Package
-        let package = Persistence(wrappedValue: IntEnum.a, "int enum", store: storePackage)
+        let package = AppStorageCompat(wrappedValue: IntEnum.a, "int enum", store: storePackage)
         package.wrappedValue = .b
 
         XCTAssertEqual(storePackage.integer(forKey: "int enum"), 1)

@@ -5,7 +5,7 @@ final class AppStorageKVOTests: XCTestCase {
 
     func testUpdatingTheValueInUserDefaultsShouldReflectInPropertyWrapper() {
         let store = UserDefaults(suiteName: #function)!
-        let persistence = Persistence(wrappedValue: true, "boolean", store: store)
+        let persistence = AppStorageCompat(wrappedValue: true, "boolean", store: store)
 
         store.set(false, forKey: "boolean")
 
@@ -14,7 +14,7 @@ final class AppStorageKVOTests: XCTestCase {
 
     func testSettingTheValueToNilShouldRestoreDefaultValue() {
         let store = UserDefaults(suiteName: #function)!
-        let persistence = Persistence(wrappedValue: true, "boolean", store: store)
+        let persistence = AppStorageCompat(wrappedValue: true, "boolean", store: store)
         persistence.wrappedValue = false
 
         store.set(nil, forKey: "boolean")
@@ -26,7 +26,7 @@ final class AppStorageKVOTests: XCTestCase {
         let store = UserDefaults(suiteName: #function)!
 
         do {
-            let persistence = Persistence(wrappedValue: true, "boolean", store: store)
+            let persistence = AppStorageCompat(wrappedValue: true, "boolean", store: store)
             persistence.wrappedValue = false
         }
 
