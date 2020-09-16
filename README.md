@@ -96,7 +96,7 @@ Add the package to your Package.swift file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/xavierLowmiller/AppStorage.git", .upToNextMajor(from: "1.0.2"))
+    .package(url: "https://github.com/xavierLowmiller/AppStorage.git", .upToNextMajor(from: "1.0.3"))
 ]
 ```
 
@@ -109,7 +109,7 @@ platform :ios, '13.0'
 use_frameworks!
 
 target 'MyApp' do
-  pod 'AppStorage', '~> 1.0.2'
+  pod 'AppStorage', '~> 1.0.3'
 end
 ```
 
@@ -118,7 +118,7 @@ end
 Add this line to your Cartfile:
 
 ```ruby
-github "xavierLowmiller/AppStorage" ~> 1.0.2
+github "xavierLowmiller/AppStorage" ~> 1.0.3
 ```
 
 ### Manual
