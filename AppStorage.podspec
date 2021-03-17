@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "AppStorage"
-  spec.version      = "1.0.3"
+  spec.version      = "1.0.4"
   spec.summary      = "A drop-in replacement for the iOS 14 `@AppStorage` property wrapper."
 
   spec.description  = <<-DESC
