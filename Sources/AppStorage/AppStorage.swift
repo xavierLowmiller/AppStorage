@@ -30,7 +30,8 @@ import SwiftUI
     }
 }
 
-private class Storage<Value>: NSObject, ObservableObject {
+@usableFromInline
+final class Storage<Value>: NSObject, ObservableObject {
     @Published var value: Value
     private let defaultValue: Value
     private let store: UserDefaults
