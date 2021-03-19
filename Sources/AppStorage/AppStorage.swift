@@ -205,15 +205,15 @@ extension AppStorageCompat where Value : RawRepresentable, Value.RawValue == Int
     ///
     /// A common usage is with enumerations:
     ///
-    ///    enum MyEnum: Int {
-    ///        case a
-    ///        case b
-    ///        case c
-    ///    }
-    ///    struct MyView: View {
-    ///        @AppStorage("MyEnumValue") private var value = MyEnum.a
-    ///        var body: some View { ... }
-    ///    }
+    ///     enum MyEnum: Int {
+    ///         case a
+    ///         case b
+    ///         case c
+    ///     }
+    ///     struct MyView: View {
+    ///         @AppStorage("MyEnumValue") private var value = MyEnum.a
+    ///         var body: some View { ... }
+    ///     }
     ///
     /// - Parameters:
     ///   - wrappedValue: The default value if an integer value
@@ -241,15 +241,15 @@ extension AppStorageCompat where Value : RawRepresentable, Value.RawValue == Str
     ///
     /// A common usage is with enumerations:
     ///
-    ///    enum MyEnum: String {
-    ///        case a
-    ///        case b
-    ///        case c
-    ///    }
-    ///    struct MyView: View {
-    ///        @AppStorage("MyEnumValue") private var value = MyEnum.a
-    ///        var body: some View { ... }
-    ///    }
+    ///     enum MyEnum: String {
+    ///         case a
+    ///         case b
+    ///         case c
+    ///     }
+    ///     struct MyView: View {
+    ///         @AppStorage("MyEnumValue") private var value = MyEnum.a
+    ///         var body: some View { ... }
+    ///     }
     ///
     /// - Parameters:
     ///   - wrappedValue: The default value if a string value
