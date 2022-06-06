@@ -16,7 +16,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Generate Xcode Project
-      run: swift package generate-xcodeproj
     - name: Run Tests
       run: swift test
