@@ -10,11 +10,9 @@ let package = Package(
             name: "AppStorage",
             targets: ["AppStorage"]),
     ],
-    dependencies: [],
     targets: [
         .target(
-            name: "AppStorage",
-            dependencies: []),
+            name: "AppStorage"),
         .testTarget(
             name: "AppStorageTests",
             dependencies: ["AppStorage"]),
