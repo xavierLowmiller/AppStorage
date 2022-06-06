@@ -16,7 +16,7 @@ jobs:
     - name: Build Carthage Archive
       run: |
         carthage build --use-xcframeworks --no-skip-current
-        zip -r AppStorage-v${{ github.ref }}.xcframework.zip Carthage/Build
+        zip -r AppStorage.xcframework.zip Carthage/Build
 
     - name: Create Release
       id: create_release
