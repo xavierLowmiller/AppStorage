@@ -12,8 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    # - name: Build Carthage Archive
-    #   run: carthage build --archive --use-xcframeworks
+    - name: Build Carthage Archive
+      run: carthage build --archive --use-xcframeworks
 
     - name: Create Release
       id: create_release
@@ -26,12 +26,12 @@ jobs:
         draft: false
         prerelease: false
 
-    # - name: Upload Release Asset
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-    #     asset_path: ./AppStorage.framework.zip
-    #     asset_name: AppStorage.framework.zip
-    #     asset_content_type: application/zip
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./AppStorage.framework.zip
+        asset_name: AppStorage.framework.zip
+        asset_content_type: application/zip
